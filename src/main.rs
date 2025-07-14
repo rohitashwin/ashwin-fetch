@@ -117,11 +117,20 @@ fn get_gpu_info() -> Vec<GpuInfo> {
     let instance = Instance::new(&instance_descriptor);
     let adapters = instance.enumerate_adapters(Backends::all());
     let mut gpu_infos = vec![];
-    for adapter in adapters {
+    for (idx, adapter) in adapters.iter().enumerate() {
         let info = adapter.get_info();
+        if info.device_type == wgpu::DeviceType::Other || info.device_type == wgpu::DeviceType::Cpu {
+            continue;
+        }
         gpu_infos.push(GpuInfo {
-            device_index: info.device as usize,
-            gpu_name: info.name,
+            device_index: idx,
+            gpu_name: match info.device_type {
+                wgpu::DeviceType::IntegratedGpu => format!("{} (Integrated GPU)", info.name),
+                wgpu::DeviceType::DiscreteGpu => format!("{} (Discrete GPU)", info.name),
+                wgpu::DeviceType::VirtualGpu => format!("{} (Virtual GPU)", info.name),
+                wgpu::DeviceType::Cpu => format!("{} (Software Rasterizer)", info.name),
+                wgpu::DeviceType::Other => format!("{} (unknown gpu type)", info.name),
+            },
         });
     }
     gpu_infos.sort_by(|x, y| x.device_index.cmp(&y.device_index));
@@ -162,13 +171,13 @@ fn print_all_info(output_info: &OutputInfo) {
     ];
     for (cpu_brand, cpu_info) in &output_info.cpu {
         output_info_vec.push(format!(
-            "CPU:       {} - {} cores, {:.2}% avg, {:.2} MHz",
+            "CPU:       {} - {} cores, {:.2}% avg, {:.2} MHz (max)",
             cpu_brand, cpu_info.num_cores, cpu_info.avg_usage, cpu_info.max_frequency_mhz
         ));
     }
     for gpu_info in &output_info.gpu {
         output_info_vec.push(format!(
-            "GPU {}:     {}",
+            "GPU {:.>3}:   {}",
             gpu_info.device_index, gpu_info.gpu_name
         ));
     }
