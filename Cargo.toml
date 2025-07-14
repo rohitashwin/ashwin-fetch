@@ -1,0 +1,15 @@
+[package]
+name = "ashwin-fetch"
+version = "0.0.1"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4.41"
+sysinfo = "0.36.0"
+wgpu = "26.0.1"
+whoami = "1.6.0"
+winit = "0.30.11"
+
+[[bin]]
+name = "ashwin-fetch"
+path = "src/main.rs"
