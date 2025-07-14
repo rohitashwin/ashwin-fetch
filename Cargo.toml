@@ -3,7 +3,12 @@ name = "ashwin-fetch"
 version = "0.0.1"
 edition = "2024"
 authors = ["Ashwin Rohit Alagiri Rajan ashwinrohit@proton.me"]
+license = "MIT OR Apache-2.0"
+license-file = "LICENSE"
 description = "Similar to `neofetch` but written with rust."
+documentation = "https://docs.rs/ashwin-fetch"
+homepage = "https://github.com/rohitashwin/ashwin-fetch/"
+repository = "https://github.com/rohitashwin/ashwin-fetch/"
 
 [dependencies]
 chrono = "0.4.41"
