@@ -2,6 +2,8 @@
 name = "ashwin-fetch"
 version = "0.0.1"
 edition = "2024"
+authors = ["Ashwin Rohit Alagiri Rajan ashwinrohit@proton.me"]
+description = "Similar to `neofetch` but written with rust."
 
 [dependencies]
 chrono = "0.4.41"
